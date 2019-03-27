@@ -1,0 +1,58 @@
+---
+id: 270
+title: 'What I&#8217;m looking for at Wharton'
+date: 2014-07-06T09:00:36+00:00
+author: tvladeck
+layout: post
+guid: http://tomvladeck.com/?p=270
+permalink: /2014/07/06/what-im-looking-for-at-wharton/
+dsq_thread_id:
+  - "2821412196"
+categories:
+  - Wharton
+tags:
+  - entrepreneurship
+  - tech
+  - wharton
+---
+After we shut down <a href="http://buildinghero.com/" target="_blank">Building Hero</a>, my career goals were pretty simple: start and launch new products and businesses. My analysis led me to conclude that this happens in essentially two ways: (a) as an independent entrepreneur and (b) as a product manager (or similar role), usually within tech companies - after all, big companies launch new products all the time. After taking as many coffees as possible, putting out a few feelers, I concluded that (b) was going to be a very tough role to land with my background. And for (a), despite working on Building Hero for two years, I never built up a deep network in tech; I explored an idea for about a month but concluded that I didn't have either a strong idea to build on nor a network in tech to leverage.
+
+I concluded that business school would be a good chance to learn many of the basics of business-building and the product development process, build a great network alongside a world-class cohort of people, and that my degree would provide me with significant reputational capital. In addition - and I didn't articulate this beforehand - I think the two years at business school will be a great opportunity to create new things with the resources available to students (not least the amazing cohort of fellow classmates).
+
+On August 4th, I'll start the first of two years getting an MBA at Wharton. One of the pieces of advice they give you when you're a matriculating MBA student at a school like Wharton is to take some time to really think about what you want to get out of it, because there will be so many potential demands on your time. So as I'm winding down my current job, I've started to think about what I want to get out of the whole experience.
+
+Below, I list out the overview of what I want to achieve, broken down into the following categories: academics, community, leadership, personal branding, and finally, some specific plans.
+<h2>Academics</h2>
+As mentioned, academics are one of the four core reasons I decided business school would be a good choice for me. I actually probably weight academics more strongly than most other matriculating students; I've experienced firsthand what it's like to try and build a business without working mental models, and it was a tough experience in which I usually felt lost. Only late in the experience when I started taking classes on product development and reading more widely on the subject did I realize how lost I truly was.
+
+At any rate, a true accounting of my skills would rate me a bit behind the curve in many basic business categories. I'm most excited about classes on product development, entrepreneurial management, marketing, and leadership - as they relate most directly to my career interests - but I'm also excited to get a basic education in finance, operations management, and accounting. So - the basics.
+<h2>Community</h2>
+The greatest value in business school is probably in the cohort. It certainly felt that way when I got to meet my future classmates this past Spring at Welcome Weekend. So it would be a crime not to find ways to maximize that experience.
+
+Clubs are a big part of business school - both in terms of the career development process and the social scene. Career-wise, the Entrepreneurship and Technology clubs align most closely with my goals. I am going to check out the Marketing and Design clubs as well, but as long as my career goals don't change it's seems relatively certain that the Entrepreneurship and Tech clubs will get the majority of my attention. Socially, the Photography and Climbing clubs map perfectly to my current outside hobby interests, but who knows what will gel.
+
+In addition, I'd like to find ways to engage with both the Wharton and the Philadelphia communities outside of traditional channels. (There is a specific Wharton-led opportunity in this area that I am super-interested in, though.) My roommate and I discussed creating a sort of lifestyle/community email newsletter that we'd curate. We'll see about that - but I'd like to get involved in something that isn't just put out on a platter by the school. Which takes me to...
+<h2>Starting Something (and "Leadership")</h2>
+Leadership really is a separate category, containing elements of specific training, academic learning (i.e. the mechanics of emotional contagion), and, I dunno, just having to <strong>be</strong> a leader. My career ambitions put me at the top of organizational structures by definition (i.e. I'm not looking to be a hugely successful investor), so this is a very important skill to develop.
+
+There are some specific leadership programs offered by Wharton which I'll get to below, but <strong>my number one goal at Wharton is to start <em>something</em>. </strong>Right now I'm agnostic on what that will be; it could be a new club on campus, a civic organization, a company, or even "just" an event. But this is an important goal to me; at the very least I want the practice of creating something out of nothing, and I don't want to let a prime time and a litany of resources for doing so go to waste.
+<h2>Personal Brand</h2>
+Careers are changing - everyone knows that the days of working for years at a single company or organization are gone. As Reid Hoffman <a href="http://www.babson.edu/news-events/events/commencement/recap/pages/reid-hoffman.aspx" target="_blank">puts it</a>:
+<blockquote><span style="color: #333333;">Whereas we used to have a career ladder, now we have a career jungle gym. Success in a career is no longer a simple ascension on a path of steps. You need to climb sideways and sometimes down; sometimes you need to swing and jump from one set of bars to the next. And, to extend the metaphor, sometimes you need to spring from the jungle gym and establish your own turf somewhere else on the playground.</span></blockquote>
+The value, then, of a personal brand is paramount, as your environment will constantly be changing throughout your career.
+
+I've got two primary goals for my personal brand: (a) build a fantastic network while I'm at the school, and (b) to keep writing and use my blog as a tool to promote myself.
+
+My view is that connections are best formed organically; trying to network has never been my thing, but when you actually have things going on - you're trying to get an event off the ground, you're building a company, you're writing a blog post, etc. - the people that you reach out to to collaborate with often become friends and future collaborators. So I'm not necessarily going to devote time to this specifically, but my hope is that Wharton will provide a fertile environment for my network to grow as a form of "exhaust" from all the other shit I'll be trying to do.
+
+I realized that I really enjoyed writing, and that the process of writing really helped me distill and structure my thoughts, during the time I was putting together sixteen application essays for business school; these essays dealt with serious topics about my life and future ambitions, and they helped me form a vision for the future. So I love writing on this blog, and at the same time, having a well-articulated point-of-view on relevant topics is a great way to establish credibility with other people. So I'm going to write on this blog more regularly (my goal is to post twice/week) and to promote it more heavily. I have readership and engagement goals, but I won't share those for now. I may have to establish a more consistent theme, but this is something I'll worry about later.
+<h2>Specifics</h2>
+In terms of specifics, I will almost certainly look to get an internship in tech over next summer, which most likely means I will be getting involved heavily in the tech club early on. My view at the moment is that this kind of internship will provide me with the most relevant training and the right kind of optionality to either start a company or to gun for a product manager/product marketing manager role after school. I imagine I will be competing with a number of students with similar career goals, so it will make differentiating through personal initiatives all-the-more important.
+
+There are many specific programs that Wharton offers; the ones that I'm interested in mainly fall into "leadership development" and "entrepreneurial resources". On the leadership side, the programs that interest me the most at the moment are: the <a href="wlp.wharton.upenn.edu/MBA/mba-venture-fellows.cfm" target="_blank">Venture Fellows</a> program, possibly because I did a 30-day NOLS mountaineering course, which was one of the most amazing and personal-growth-catalyzing experiences I've had; the <a href="wlp.wharton.upenn.edu/MBA/nonprofit-board-leadership-pro.cfm" target="_blank">Non-Profit Board leadership</a> program - I work at in the non-profit space now, and recognize the inherent difficulties of running these organizations well, but at the same time am a huge believer that civic involvement is an important part of a well-led life; and their <a href="wlp.wharton.upenn.edu/MBA/executive-coaching-and-feedback-program.cfm" target="_blank">Executive Coaching</a> program: growing up I played baseball for all of my youth, and had great coaches shape my development; I am excited to see how "coaching" - outside perspectives and regular feedback - works outside of the athletic setting. I see no reason why it should be much different.
+
+On the entrepreneurial resources side, Wharton has a business plan competition, and a "venture initiation program". It seems clear that at the very least for practice that I should enter the first; the latter, which is geared around providing resources to actually start a company, we'll have to wait and see about.
+
+And just as importantly, some noes. I'm not particularly interested in applying to the <a href="http://wlp.wharton.upenn.edu/MBA/leadership-fellows.cfm" target="_blank">Leadership Fellows</a>. I can't really articulate why, but it doesn't really interest me off the bat. I'm similarly not interested in being on the <a href="http://mbawelcome.wharton.upenn.edu/welcome-events/welcome-committee/" target="_blank">Welcome Committee</a> - in this case, although it seems interesting, it just doesn't seem as interesting as many of the other opportunities available, so I'm going to deprioritize it.
+
+That's the plan for now! I'm sure it will all change.

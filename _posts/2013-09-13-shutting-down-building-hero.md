@@ -1,0 +1,77 @@
+---
+id: 99
+title: Shutting Down Building Hero
+date: 2013-09-13T23:48:42+00:00
+author: tvladeck
+layout: post
+guid: http://tomvladeck.com/?p=99
+permalink: /2013/09/13/shutting-down-building-hero/
+dsq_thread_id:
+  - "1757446860"
+categories:
+  - Entrepreneurship
+  - Product
+---
+<h2 dir="ltr">Or, the difference between Solar and Energy Efficiency Business Models</h2>
+<p dir="ltr">As sustainability buffs, it’s been hard not to notice the success of new solar business models in the US. Numerous large companies, like SolarCity, SunRun, SunEdison, Sungevity, Clean Power Finance - and others - have been formed to deliver solar energy in innovative ways. Third party financing is a central component, and has been huge to solar’s success in the US. In 2012, over 75% of California’s new solar systems were leased as opposed to owned outright [1].</p>
+<p dir="ltr">We thought of this business model as Solar-as-a-Service; not only is there third-party financing, but maintenance and equipment replacement are also transferred from the homeowner to the solar distributor. It’s a powerful model because it “transforms a complex investment into a money-saving service” [1]. Boom. That’s an easy decision to make.</p>
+<p dir="ltr">Our premise for Building Hero was that Energy Efficiency as a Service (EE-aaS) could be an even bigger opportunity. It was an easy idea to articulate: “SolarCity for Energy Efficiency”. As energy efficiency nerds and idea guys, we loved the concept and viewed it as a “no brainer” - no money down and energy savings from Day 1? How could customers possibly say no? All of our energy efficiency nerd friends agreed that it was an awesome idea and we were off to the races.</p>
+<p dir="ltr">Predictably, with an approach like that, most of our target customers did in fact say no. Although we had some minor success with the model, we never attained product-market fit with our approach. Unfortunately, the reasons that Solar-aaS succeeds didn’t hold true as we dug deeper into the EE-aaS model.</p>
+<p dir="ltr">We learned a ton of lessons along the way that are particular to the difficult to solve problem of EE-aaS that we wanted to share as future entrepreneurs approach this tough problem.</p>
+<p dir="ltr">Want to chat? We’d be happy to. Feel free to email us geoffplewis [at] gmail or thomas [dot] vladeck [at] gmail</p>
+
+<h2 dir="ltr">Inside v. Outside</h2>
+<p dir="ltr">The most important operational difference between Solar and EE that we encountered is what we dub “the inside v. outside problem”. Solar devices are “standalone” - not only are they on the outside of the building, but they are entirely new systems that are added to the building. They are not replacing anything. They are also invisible from the inside (where decision makers spend their day).</p>
+<p dir="ltr">Considering adding something new is a different type of decision than considering replacing something you have with something different. Not only is the customer considering what they are getting, but they also must consider (and often dwell on) what they are losing. Making a core change to the aesthetic or functioning of the space is a more difficult decision to make, and that was a difficult barrier for us to overcome.</p>
+For many of our customers, the idea of having work done inside their space, no matter the benefits, immediately put a stop to the whole process.
+<h2 dir="ltr">Relative Advantage of Financing</h2>
+<p dir="ltr">Many energy efficiency investments produce better returns with less required financial engineering to make sense. So it follows that they should be better investments and even more financeable - right?</p>
+<p dir="ltr">The mistake here is that - at least with LED lighting - financing has a lesser relative advantage over purchasing cf. solar. Solar investments have two features that make financing very valuable:</p>
+
+<ul>
+	<li dir="ltr">
+<p dir="ltr">High capital cost relative to the assets of the decision maker</p>
+</li>
+	<li dir="ltr">
+<p dir="ltr">Complicated or inaccessible incentives that are required for the investment to make sense - tax credits chief among them</p>
+</li>
+</ul>
+<p dir="ltr">For LED lighting, the capital costs relative to the assets of the decision-maker are smaller. In addition, in the case of LED lighting, the investment can be done in stages, lowering the capital burden at any given time (something our would-be customers often proposed doing - and many have done).  Second, incentives are often not required for the investment to make sense, and they are usually made available as lump-sum cash rebates as opposed to tax credits.</p>
+<p dir="ltr">The result is that the delta between investments in LED lighting (and we think this is a problem general to the energy efficiency space) that make sense without financing, and those that make sense only with financing, is much smaller than it is in solar.</p>
+<p dir="ltr">Note that we are not mentioning the problems with energy efficiency investments from the perspective of the financier, namely the “negative cash flow” problem (returns come from money not spent) and the suitability of the physical investment as collateral. These have been discussed at length elsewhere, and frankly were not a factor in the success of our business.</p>
+
+<h2>Residential v. Commercial</h2>
+Energy efficiency investments, by definition, only address part of the overall load in the building. Solar, on the other hand, is often net metered, meaning that the value of the investment is only loosely coupled with the existing energy consumption in the building. And even if the system is not net-metered, it can offset the entire building load as opposed to just the system being replaced. In residences, since people are typically out of the house during the day, many systems simply don’t get enough use to warrant an investment in more efficient equipment.
+
+Energy efficiency investments in residences still often make sense! But take lighting, for example: lights in homes are often only on for a few hours a day. Lights in a retail store may be on for 12 hours or more every day. In a warehouse, it may be all day, every day.
+
+The result is that energy efficiency investments make relatively more sense in commercial spaces than residences.
+
+Residences and commercial buildings are very different from a business perspective: occupancy patterns, decision making, internal capabilities, buying patterns, etc., are all very different between the two.
+<h2 dir="ltr">Decision-making and Ingrained Buying Patterns</h2>
+Solar is not only a “standalone” system that is an addition to the building, not a replacement of a system - it’s also a completely new product for most decision makers. For existing products, like lighting (or HVAC systems, or windows, etc.), a new business must disrupt existing vendor relationships.
+
+In lighting, the barrier is especially strong. Until now, with LEDs, lighting has been a relatively “fast-moving” good. Especially in retail spaces, which use halogen lamps, lighting purchases are frequent. This has led to strong relationships between our targeted customers and their existing distributors.
+
+Many of our customers “had a guy” that did their lighting. For this segment, the option of considering a new relationship for that portion of their space was dismissed off-the-bat. Many of these distributors offer LED lighting, but:
+<ul>
+	<li dir="ltr">
+<p dir="ltr">None of them offer financing (so far as we know!)</p>
+</li>
+	<li dir="ltr">
+<p dir="ltr">LED lighting options are not “what they know”, and it is much easier to keep selling the same products that have been sold for the last thirty years; and finally,</p>
+</li>
+	<li dir="ltr">
+<p dir="ltr">Distributors rely on frequent ongoing business from their relationships. Once a distributor sells their contact LED lights, they will most likely not hear from that contact for a number of years. So there is an incentive not to sell LED lighting.</p>
+</li>
+</ul>
+<p dir="ltr">From our perspective, the problem was simply that the customers wouldn’t consider our alternative. From a policy or market-structure perspective, there is the further problem that decision makers are not seeing all the available options that may convince them to switch to LEDs. In some cases not even knowing about all the LED options, and in nearly all cases not considering financing options for an investment in LEDs.</p>
+
+<h2>Conclusion</h2>
+We both strongly believe that there are better business models out there for energy efficiency than those that exist today. We caution, though, to look beyond financing. Building energy efficiency is a huge resource and we encourage other entrepreneurs to continue attacking this market with new technologies and business models.
+
+Both of us are happy to speak further with anyone that would like to hear more about our experiences. Our emails are geoffplewis [at] gmail [dot] com and thomas [dot] vladeck [at] gmail [dot] com.
+
+&nbsp;
+
+<span style="line-height: 1.5;">[1] </span><a style="line-height: 1.5;" href="http://climatepolicyinitiative.org/wp-content/uploads/2013/07/Improving-Solar-Policy-Lessons-from-the-solar-leasing-boom-in-California.pdf" target="_blank">http://<wbr />climatepolicyinitiative.org/<wbr />wp-content/uploads/2013/07/<wbr />Improving-Solar-Policy-<wbr />Lessons-from-the-solar-<wbr />leasing-boom-in-California.pdf</a>

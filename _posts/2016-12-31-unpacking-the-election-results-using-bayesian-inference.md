@@ -1,0 +1,147 @@
+---
+id: 459
+title: Unpacking the election results using bayesian inference
+date: 2016-12-31T01:48:40+00:00
+author: tvladeck
+layout: post
+guid: http://tomvladeck.com/?p=459
+permalink: /2016/12/31/unpacking-the-election-results-using-bayesian-inference/
+dsq_thread_id:
+  - "5423519991"
+categories:
+  - Uncategorized
+---
+As anyone whose read this blog recently can surmise, I'm pretty interested in how this election turned out, and have been doing <a href="http://tomvladeck.com/2016/12/18/a-different-kind-of-political-geography/" target="_blank">some exploratory research</a> into the makeup of our electorate. Over the past few weeks I've taken the analysis a step further and built a sophisticated regression that goes as far as anything I've seen to unpack what happened.
+<h2><strong>Background on probability distributions</strong></h2>
+(Skip this section if you're familiar with the beta and binomial distributions.)
+
+Before I get started explaining how the model works, we need to discuss some important probability distributions.
+
+The first one is easy: the coin flip. In math, we call a coin flip a <a href="https://en.wikipedia.org/wiki/Bernoulli_trial" target="_blank">Bernoulli trial</a>, but they're the same thing. A flip of a fair coin is what a mathematician would call a "Bernoulli trial with p = 0.5". The "p = 0.5" part simply means that the coin has a 50% chance of landing heads (and 50% chance of landing tails). But in principle you can weight coins however you want, and you can have Bernoulli trials with p = 0.1, p = 0.75, p = 0.9999999, or whatever.
+
+Now let's imagine we flip one of these coins 100 times. What is the probability that it comes up heads 50 times? Even if the coin is fair (p = 0.5), just by random chance it may come up heads only 40 times, or may come up heads more than you'd expect - like 60 times. It is even <strong>possible</strong> for it to come up 100 times in a row, although the odds of that are vanishingly small.
+
+The distribution of possible times the coin comes up heads is called a <a href="https://en.wikipedia.org/wiki/Binomial_distribution" target="_blank">binomial distribution</a>. A <span style="text-decoration: underline;">probability distribution</span> is a set of numbers that assigns a value to every <span style="text-decoration: underline;">possible</span> outcome. In the case of 100 coin flips, the binomial distribution will assign a value to every number between 0 and 100 (which are all the possible numbers of times the coin could come up heads), and all of these values will sum to 1.
+
+Now let's go one step further. Let's imagine you have a big bag of different coins, all with different weights. Let's imagine we grab a bunch of coins out of the bag and then flip them. How can we model the distribution of the number of times those coins will come up heads?
+
+First, we need to think about the distribution of possible weights the coins have. Let's imagine we line up the coins from the lowest weight to the highest weight, and stack coins with the same weight on top of each other. The relative "heights" of each stack tell us how likely it is that we grab a coin with that weight.
+
+Now we basically have something called the <a href="https://en.wikipedia.org/wiki/Beta_distribution" target="_blank">beta distribution</a>, which is a family of distributions that tell us how likely it is we'll get a number between 0 and 1. Beta distributions are very flexible, and they can look like any of these shapes and almost everything in between:
+
+[caption id="attachment_466" align="alignnone" width="960"]<a href="http://tomvladeck.com/wp-content/uploads/2016/12/Screenshot-2016-12-30-16.31.15.png" target="_blank" rel="http://www.brucehardie.com/talks/cba_tut_art_16_HO.pdf"><img class="wp-image-466 size-full" src="http://tomvladeck.com/wp-content/uploads/2016/12/Screenshot-2016-12-30-16.31.15.png" width="960" height="637" /></a> Taken from Bruce Hardie: http://www.brucehardie.com/talks/cba_tut_art_16_HO.pdf[/caption]
+
+&nbsp;
+
+So if you had a bag like the upper left, most of the coins would be weighted to come up tails, and if you had a bag like the lower right, most of the coins would be weighted to come up heads; if you had a bag like the lower left, the coins would either be weighted very strongly to come up tails or very strongly to come up heads.
+
+This distribution is called the <a href="https://en.wikipedia.org/wiki/Beta-binomial_distribution" target="_blank">beta-binomial</a>.
+<h2><strong>Model set up</strong></h2>
+You might now be seeing where this is going. While we can't observe individuals' voting behavior (other than whether or not they voted), we can look at the talleys at local levels, like counties. And let's say, some time before the election, you lined up every voter in a county and stacked them the same way you did with coins as before, but instead of the probability of "coming up heads", you'd be looking at a voter's probability of voting for one of the two major candidates. That would look like a beta distribution. You could then model the number of votes for a particular candidate in a particular county would as a beta-binomial distribution.
+
+So in our model we can say the number of votes <code>V[i]</code> in county <code>i</code> is distributed beta-binomial with <code>N[i]</code> voters and voters with <code>p[i]</code> propensity to vote for that candidate:
+<pre>V[i] ~ binomial(p[i], N[i])
+</pre>
+But we're keeping in mind that <code>p[i]</code> is not a single number but a beta distribution with parameters <code>alpha[i]</code> and <code>beta[i]</code>:
+<pre>p[i] ~ beta(alpha[i], beta[i])
+</pre>
+So now we need to talk about <code>alpha</code> and <code>beta</code>. A beta distribution needs two parameters to tell you what kind of shape it has. Commonly, these are called <code>alpha</code> and <code>beta</code> (I know, it's confusing to have the name of the distribution and one of its parameters be the same), and the way you can think about it is that <code>alpha</code> "pushes" the distribution to the right (i.e. in the lower right above) and that <code>beta</code> "pushes" the distribution to the left (i.e. in the upper left above). Both <code>alpha</code> and <code>beta</code> have to be greater than zero.
+
+Unfortunately, while this helps us understand what's going on with the shape of the distribution, it's not a useful way to encapsulate the information if we were to talk about voting behavior. If something (say unemployment) were to "push" the distribution one way (say having an effect on <code>alpha</code>), it would also likely have an effect on <code>beta</code> (because they push in opposite directions). Ideally, we'd separate alpha and beta into two unrelated pieces of information. Let's see how we can do that.
+
+It's a property of the beta distribution that its average is:
+<pre> 
+   alpha
+------------
+alpha + beta
+</pre>
+So let's just define a new term called <code>mu</code> that's equal to this average.
+<pre>        alpha
+mu = ------------
+     alpha + beta
+</pre>
+And then we can define a new term <code>phi</code> like so
+<pre>       alpha
+phi = --------
+        mu  
+</pre>
+With a few lines of arithmetic, we can solve for everything else:
+<pre> 
+phi = alpha + beta
+alpha = mu * phi 
+beta = (1 - mu) * phi
+</pre>
+And if <code>alpha</code> is the amount of "pushing" to the right and <code>beta</code> is the amount of "pushing" to the left in the distribution, then <code>phi</code> is all of the pushing (either left or right) in the distribution. This is a sort of "uniformity" parameter. Large values of <code>phi</code> mean that almost all of the distribution is near the average (think the upper right beta distribution above) - the <code>alpha</code> and <code>beta</code> are pushing up against each other - and small values of <code>phi</code> mean that almost all the values are away from the average (think the beta distribution on the lower left above).
+
+In this parameterization, we can model propensity and polarization independently.
+
+So now we can use county-level information to set up regressions on <code>mu</code> and <code>phi</code> - and therefore on the county's distribution of voters, and how they ended up voting. Since <code>mu</code> has to be between 0 and 1 we use the <code>logit</code> link function, and since <code>phi</code> has to be greater than zero, we use the <code>exponential</code> link function
+<pre>logit(mu[i]) = linear function of predictors in county i
+log(phi[i]) = linear function of predictors in county i
+</pre>
+The "linear functions of predictors" have the format:
+<pre>coef[uninsured] * uninsured[i] + coef[unemployment] * unemployment[i] + ...
+</pre>
+Where <code>uninsured[i]</code> is the uninsurance rate in that county and <code>coef[uninsured]</code> is the effect that uninsurance has on the average propensity of voters in that county (in the first equation) or the polarity/centrality of the voting distribution (in the second equation).
+
+For each county, I extracted nine pieces of information:
+<ul>
+ 	<li>The proportion of residents that do not have insurance</li>
+ 	<li>The rate of unemployment</li>
+ 	<li>The rate of diabetes (a proxy for overall health levels)</li>
+ 	<li>The median income</li>
+ 	<li>The violent crime rate</li>
+ 	<li>The median age</li>
+ 	<li>The gini coefficient (an index of income heterogeneity)</li>
+ 	<li>The rate of high-school graduation</li>
+ 	<li>The proportion of residents that are white</li>
+</ul>
+Since each of the above pieces of information had two coefficients (one each for the equations for <code>mu</code> and <strong><code>phi</code></strong>) the model I used had twenty parameters against 3111 observations.
+
+The source for the data is the same as in <a href="http://tomvladeck.com/2016/12/18/a-different-kind-of-political-geography/" target="_blank">this post</a>, and is <a href="https://github.com/Deleetdk/USA.county.data" target="_blank">available and described here</a>.
+
+The <code>BUGS</code> model code is below: (all of the code is available <a href="https://github.com/tvladeck/beta_binomial_county_model" target="_blank">here</a> and the model code is in the file <a href="https://github.com/tvladeck/beta_binomial_county_model/blob/master/county_binom_model.bugs.R" target="_blank">county_binom_model.bugs.R</a>)
+
+[gist]https://gist.github.com/tvladeck/f050e1e4e398f91dc48b73723e72c1a5[/gist]
+<h2>Model results / validation</h2>
+The model performs very well on first inspection, especially when we take the log of the actual votes and the prediction (upper right plot), and even more so when we do that and restrict it only to counties with greater than 20,000 votes (lower left plot):
+
+<a href="http://tomvladeck.com/wp-content/uploads/2016/12/actual_v_estimate.svg"><img class="alignnone size-large wp-image-505" src="http://tomvladeck.com/wp-content/uploads/2016/12/actual_v_estimate.svg" alt="actual_v_estimate" /></a>
+
+This is actually cheating a bit, since the number of votes <strong>for</strong> HRC (which the model is fitting) in any county is constrained by the number of votes overall. Here's a plot showing the estimated proportion vs. the actual proportion of votes for HRC, weighted by the number of votes overall:
+
+<a href="http://tomvladeck.com/wp-content/uploads/2016/12/proportions_plot.svg"><img class="alignnone size-large wp-image-506" src="http://tomvladeck.com/wp-content/uploads/2016/12/proportions_plot.svg" alt="proportions_plot" /></a>
+
+Here is the plot of coefficients for <code>mu</code> (the average propensity within a county):
+
+<a href="http://tomvladeck.com/wp-content/uploads/2016/12/mu_coefs_plot.svg"><img class="alignnone size-large wp-image-507" src="http://tomvladeck.com/wp-content/uploads/2016/12/mu_coefs_plot.svg" alt="mu_coefs_plot" /></a>
+
+All else being equal, coefficients to the left of the vertical bar helped Trump, and to the right helped Clinton. As we can see, since more Democratic support is concentrated in dense urban areas, there are many more <strong>counties</strong> that supported Trump, so the intercept is far to the left. Unsurprisingly (but perhaps sadly) <code>whiteness</code> was the strongest predictor overall and was very strong for Trump.
+
+In addition, the rate of <code>uninsurance</code> was a relatively strong predictor for Trump support, and <code>diabetes</code> (a proxy for overall health) was a smaller but significant factor.
+
+Economic factors (<code>income</code>, <code>gini</code> / income inequality, and <code>unemployment</code>) were either not a factor or predicted support for Clinton.
+
+The effects on polarity can be seen here:
+
+<a href="http://tomvladeck.com/wp-content/uploads/2016/12/phi_coefs_plot.svg"><img class="alignnone size-large wp-image-508" src="http://tomvladeck.com/wp-content/uploads/2016/12/phi_coefs_plot.svg" alt="phi_coefs_plot" /></a>
+
+What we can see here (as the intercept is far to the right) is that most individual counties have a fairly uniform voter base. High rates of <code>diabetes</code> and <code>whiteness</code> predict high uniformity, and basically nothing except for <code>income inequality</code> predicts diversity in voting patterns (and this is unsurprising).
+
+What is also striking is that we can map <code>mu</code> and <code>phi</code> against each other. This is a plot of "uniformity" - how similar voting preferences are within a county vs. "propensity" - the average direction a vote will go within a county. In this graph, <code>mu</code> is on the y axis, and <code>log(phi)</code> is on the x axis, and the size of a county is represented by the size of a circle:
+
+<a href="http://tomvladeck.com/wp-content/uploads/2016/12/propensity_uniformity.svg"><img class="alignnone size-large wp-image-509" src="http://tomvladeck.com/wp-content/uploads/2016/12/propensity_uniformity.svg" alt="propensity_uniformity" /></a>
+
+What we see is a positive relationship between support for Trump and uniformity within a county and vice versa.
+
+And if you're interested in bayesian inference using gibbs sampling, here are the trace plots for the parameters to show they converged nicely: <a href="http://tomvladeck.com/wp-content/uploads/2016/12/mu_trace.jpeg" target="_blank">mu trace</a> / <a href="http://tomvladeck.com/wp-content/uploads/2016/12/phi_trace.jpeg" target="_blank">phi trace</a>.
+<h2>Conclusion and potential next steps</h2>
+This modeling approach has the advantage of closely approximating the underlying dynamics of voting, and the plots showing the actual outcome vs. predicted outcome show the model has pretty good fit.
+
+It also shows that whiteness was a major driver of Trump support, and that economic factors on their own were decidedly <strong>not</strong> a factor in supporting Trump. If anything, they predicted support for Clinton. It also provides an interesting way of directly modeling unit-level (in this case, county-level) uniformity / polarity among the electorate. This approach could perhaps be of use in better identifying "swing counties" (or at least a different approach in identifying them).
+
+This modeling approach can be extended in an number of interesting ways. For example, instead of using a beta-binomial distribution to model two-way voting patterns, we could use a dirichlet-multinomial distribution (basically, the extension of beta-binomial to more than 2 possible outcomes) to model voting patterns across all candidates (including Libertarian and Green), and even flexibly model turnout by including not voting as an outcome in the distribution.
+
+We could build similar regressions for past elections and see how coefficients have changed over time.
+
+We could even match voting records across the '12 and '16 elections to make inferences about the components of the county-level vote swing: voters flipping their vote, voting in '12 and not voting in '16, or not voting in '12 and then voting in '16 - and which candidate they came to support.
