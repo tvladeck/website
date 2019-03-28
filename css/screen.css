@@ -178,6 +178,7 @@ ul.posts {
 
   #post img {
     max-width: 60em;
+    max-height: 60em;
     padding: 1em 0;
   }
 
