@@ -81,7 +81,7 @@ ul.posts {
 .site {
   font-size: 100%;
   text-align:left; 
-  width: 50em;
+  max-width: 50em;
   margin: 3em auto 2em auto;
   line-height: 1.5em;
 }
@@ -177,8 +177,8 @@ ul.posts {
     }
 
   #post img {
-    max-width: 60em;
-    max-height: 60em;
+    max-width: 65em;
+    max-height: 40em;
     padding: 1em 0;
   }
 
