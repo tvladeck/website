@@ -79,9 +79,9 @@ ul.posts {
 /*****************************************************************************/
 
 .site {
-  font-size: 110%;
-  text-align: justify;
-  width: 42em;
+  font-size: 100%;
+  text-align:left; 
+  width: 50em;
   margin: 3em auto 2em auto;
   line-height: 1.5em;
 }
@@ -177,7 +177,7 @@ ul.posts {
     }
 
   #post img {
-    max-width: 42em;
+    max-width: 60em;
     padding: 1em 0;
   }
 
