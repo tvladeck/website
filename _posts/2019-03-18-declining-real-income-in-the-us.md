@@ -1,6 +1,6 @@
 ---
 id: 660
-title: Declining real income in the US
+title: "Declining real income in the US"
 date: 2019-03-18T17:00:26+00:00
 author: tvladeck
 layout: post
