@@ -36,13 +36,9 @@ And boy, are these extremely different. Consider, the classic book <em><a rel="n
 <!-- /wp:paragraph -->
 
 <!-- wp:core-embed/twitter {"url":"https://twitter.com/tvladeck/status/1102226651923005440","type":"rich","providerNameSlug":"twitter","className":""} -->
-<figure class="wp-block-embed-twitter wp-block-embed is-type-rich is-provider-twitter">
 
-<div class="wp-block-embed__wrapper">
-https://twitter.com/tvladeck/status/1102226651923005440
-</div>
+{% twitter https://twitter.com/tvladeck/status/1102226651923005440 %}
 
-</figure>
 <!-- /wp:core-embed/twitter -->
 
 <!-- wp:paragraph -->
@@ -58,13 +54,6 @@ But is this true? At the time I wrote that tweet, I didn't have any data to back
 <!-- wp:paragraph -->
 Why does this matter? You might, like me, strenuously object to any movement towards socialism if it meant collective control of the economy while being comfortable with a welfare state. But the muddled definition of socialism out there does not help people draw lines effectively. According to the graph above, most people think of socialism as a set of policy aims; whereas most die-hards view socialism as a different form of economy. That can lead to this kind of confusion:
 <!-- /wp:paragraph -->
+{% twitter https://twitter.com/tvladeck/status/1102294506152620033 %}
 
-<!-- wp:core-embed/twitter {"url":"https://twitter.com/tvladeck/status/1102294506152620033","type":"rich","providerNameSlug":"twitter","className":""} -->
-<figure class="wp-block-embed-twitter wp-block-embed is-type-rich is-provider-twitter">
 
-<div class="wp-block-embed__wrapper">
-https://twitter.com/tvladeck/status/1102294506152620033
-</div>
-
-</figure>
-<!-- /wp:core-embed/twitter -->

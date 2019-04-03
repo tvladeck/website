@@ -14,7 +14,7 @@ categories:
 ---
 Today on Twitter I came across a tweet that seemed so heartless, so inhumane, that I had to wonder whether or not the perpetrator, was, in fact... human
 
-https://twitter.com/Patrickpetty23/status/977656503992758272
+{% twitter https://twitter.com/Patrickpetty23/status/977656503992758272 %}
 
 For those who don't know, <a href="https://twitter.com/Patrickpetty23">Patrick Petty</a> is a father of one of the Parkland victims. Unlike most of the people that have emerged and become quite visible out of Parkland, Patrick is conservative and pro Second Amendment.
 
@@ -29,3 +29,4 @@ The big problem of course is that a lot of people are going to think that @simo
 So, <strong>someone</strong> is trying to inject poison into our public debate; but who? and why?
 
 And probably most importantly, why isn't Twitter (and the same applies to Facebook and Google) doing more to prevent this kind of deception?
+

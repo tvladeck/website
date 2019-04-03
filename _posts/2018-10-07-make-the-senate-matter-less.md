@@ -15,7 +15,7 @@ On Politics Twitter there has been a lot of chatter about how undemocratic the S
 
 The Senate is not going to change any time soon. Even if other things may even out the partisan imbalance like DC or Puerto Rican statehood:
 
-https://twitter.com/NateSilver538/status/1048984649597427712
+{% twitter https://twitter.com/NateSilver538/status/1048984649597427712 %}
 
 <a href="https://en.wikipedia.org/wiki/National_Popular_Vote_Interstate_Compact" target="_blank">And there is at least one straightforward way to make the presidential election by popular vote</a>.
 
