@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>solving the &#8220;wedding table&#8221; problem in prolog</title>
+   <meta name="author" content="Thomas Pendergast Vladeck" />
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Typekit -->
+   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+
+<div class="site">
+  <div class="title">
+    <a href="/">Thomas Pendergast Vladeck</a>
+    <a class="extra" href="/">home</a>
+  </div>
+
+  <div id="title">
+    <h1>solving the &#8220;wedding table&#8221; problem in prolog</h1>
+</div>
+
+<div id="post">
+<!-- wp:heading -->
+
+<h2>what is prolog?</h2>
+
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>in a logic program you write down facts and rules, and run the program by writing a query.
+<!-- /wp:paragraph --></p>
+
+<!-- wp:paragraph -->
+<p>a typical fact in prolog looks like this: 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:code -->
+
+<pre class="wp-block-code"><code>adult(tom).</code></pre>
+
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>which means that <code>tom</code> is an <code>adult</code>. in many ways this looks like a function, but it’s not; nothing gets returned by this line. 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:paragraph -->
+<p>a rule looks like this: 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:code -->
+
+<pre class="wp-block-code"><code>grandparent(X, Y) :-
+  parent(X, Z),
+  parent(Z, Y).</code></pre>
+
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>the <code>:-</code> part can be read aloud as “is true if”. the whole rule can be read very naturally as “X is Y’s grandparent if X is the parent of Z, and Z is the parent of Y”. (in prolog, variables are written with capital letters). 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:paragraph -->
+<p>and then once you have your facts and rules written down, you run the program by writing a query. say you wrote this: 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:code -->
+
+<pre class="wp-block-code"><code>grandparent(X, tom).</code></pre>
+
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>the program would try to find some <code>X</code> that satisfied the conditions of the program that would make everythign true. 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:heading -->
+
+<h2>what is the wedding table problem?</h2>
+
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>now that we’ve gotten those basics out of the way, let’s dive into the problem we’re going to solve.
+<!-- /wp:paragraph --></p>
+
+<!-- wp:paragraph -->
+<p>i’ve never had a wedding, but many of my friends have. a common problem, as i understand from second-hand experience, is how to set the seating arrangement. dozens of family and friends from all stages of life, in many cases coming from all over the country (or the world), to sit down at the same moment. it’s a big deal!
+<!-- /wp:paragraph --></p>
+
+<!-- wp:paragraph -->
+<p>complicating matters, from any given strata, your guests are probably friends with each other. but, crucially, some of your guests may hold grudges against others. 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:paragraph -->
+<p>being the good host that you are, you want to sit friends with each other, and keep people with grudges apart. this is all, of course, subject to the constraints to the number of tables and seats that the venue holds. 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:heading -->
+
+<h2>let's work through the solution</h2>
+
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>let’s start simple. first we need to know if two people are at the same table. 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:code -->
+
+<pre class="wp-block-code"><code>at_this_table(Person1, Person2, ThisTable) :-
+    member(Person1, ThisTable),
+    member(Person2, ThisTable).</code></pre>
+
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>this is pretty self-explanatory. the <code>member</code> tests for set-membership. is <code>Person1</code> in the set called <code>ThisTable</code>
+<!-- /wp:paragraph --></p>
+
+<!-- wp:paragraph -->
+<p>but, in general we’re not going to care much if two people are at a <em>particular</em> table, but rather that they’re both at the <em>same</em> table, whichever it is.
+<!-- /wp:paragraph --></p>
+
+<!-- wp:paragraph -->
+<p>to do that, we simply write the following. 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:code -->
+
+<pre class="wp-block-code"><code>at_same_table(Person1, Person2, AllTables) :-
+    member(ThisTable, AllTables),
+    at_this_table(Person1, Person2, ThisTable).
+
+pair_at_same_table(Pair, AllTables) :-
+    nth1(1, Pair, Person1),
+    nth1(2, Pair, Person2),
+    at_same_table(Person1, Person2, AllTables).</code></pre>
+
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>first we now introduced this idea of <code>AllTables</code>, which is a variable that will be important throughout the rest of the code. the first goal is basically just saying that, first, there is a table among all of the tables avaialable to us, and second, that that table contains both of the people we’re interested in. the second goal simply makes it a bit easier to work with a set containing both of the people in the pair. 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:paragraph -->
+<p>let’s move to the more dramatic issue: making sure that enemies don’t sit at the same table. 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:code -->
+
+<pre class="wp-block-code"><code>at_different_tables(Person1, Person2, AllTables) :-
+    member(Table1, AllTables),
+    member(Table2, AllTables),
+    member(Person1, Table1),
+    member(Person2, Table2),
+    intersection(Table1, Table2, []).</code></pre>
+
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>this one was a bit tough to write. first of all, it’d be trivially easy to satisfy this constraint by not sitting one of the people at any of the tables. to guard against that, we first have to make sure that both people are, in fact, sitting at one of the tables in <code>AllTables</code>. that’s what the first four lines are doing. the last line is just saying that neither of those tables share a common member: that they are different tables. there is probably a cleaner and more direct way of doing this, but it works, so ¯_(ツ)_/¯
+<!-- /wp:paragraph --></p>
+
+<!-- wp:paragraph -->
+<p>writing this so we can handle pairs of people we get the following. the first line is just handling the special case where the “pair” is an empty set. 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:code -->
+
+<pre class="wp-block-code"><code>pair_at_different_tables([], _) :- !.
+
+pair_at_different_tables(Pair, AllTables) :-
+    nth1(1, Pair, Person1),
+    nth1(2, Pair, Person2),
+    at_different_tables(Person1, Person2, AllTables).</code></pre>
+
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>so, now we have a bit of a problem. it’d be really easy for the program to get around the constraints by making multiple copies of people! say you want david to sit with geoff, and geoff to sit with andrew, but you want to keep david and andrew apart. easy! geoff will sit in two places at once. if you don’t explicitly tell the program that this is not possible, that’s exactly what you’ll get. 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:paragraph -->
+<p>but, when i tried writing simple solutions to this, i kept running into code that would hang endlessly. some investigations of the debugger told me why. to understand it, you have to understand a bit about what it means to be a “ground” variable in a logic program. 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:heading -->
+
+<h2>grounding</h2>
+
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>let’s say you’re solving a sudoku puzzle. in the early stages of solving it, if you were to enumerate all the options in each cell that you hadn’t eliminated yet, you might have something that looks like this:
+<!-- /wp:paragraph --></p>
+
+<!-- wp:code -->
+
+<pre class="wp-block-code"><code>   4      1679   12679  |  139     2369    269   |   8      1239     5
+ 26789     3    1256789 | 14589   24569   245689 | 12679    1249   124679
+  2689   15689   125689 |   7     234569  245689 | 12369   12349   123469
+------------------------+------------------------+------------------------
+  3789     2     15789  |  3459   34579    4579  | 13579     6     13789
+  3679   15679   15679  |  359      8     25679  |   4     12359   12379
+ 36789     4     56789  |  359      1     25679  | 23579   23589   23789
+------------------------+------------------------+------------------------
+  289      89     289   |   6      459      3    |  1259     7     12489
+   5      6789     3    |   2      479      1    |   69     489     4689
+   1      6789     4    |  589     579     5789  | 23569   23589   23689</code></pre>
+
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>most of the cells are not locked in yet. the 4 and 3 in the upper left have been resolved to single values, but everythign else in that 3x3 sector is still open. in this example, the 4 and 3 are “ground” – tied to a specific value, whereas the other cells are unground – they could still inhabit a range of values.
+<!-- /wp:paragraph --></p>
+
+<!-- wp:paragraph -->
+
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>when the logic program executes, it’s going to create a number of these unground variables that could take on a range of values. so if we were to stop the program mid-way and take a look at one of the tables in our arrangement, it would be a mix of people’s names and variables representing a range of possible people. when we want to make sure that someone is only at one table, we only care about these “ground” variables – those representing actual people. if we don’t do this, the<br /> program doesn’t really know how to execute, and just hangs. 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:paragraph -->
+
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>you’ll notice this <code>\+</code> in the third goal below. that means “not”. let’s work through these goals in turn.
+<!-- /wp:paragraph --></p>
+
+<!-- wp:code -->
+
+<pre class="wp-block-code"><code>ground_member(X, Y) :-
+    member(X, Y),
+    ground(X).</code></pre>
+
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>simple – this is just finding an X such that X is ground and part of Y
+<!-- /wp:paragraph --></p>
+
+<!-- wp:code -->
+
+<pre class="wp-block-code"><code>ground_members_of_table(Table, GroundTable) :-
+    findall(X, ground_member(X, Table), GroundTable).</code></pre>
+
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>sliiiightly more complicated. this is true if <code>GroundTable</code> has all of the “named” members of a table at any point in time. we’ll use that below. 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:code -->
+
+<pre class="wp-block-code"><code>not_ground_member_of_table(Person, AnotherTable) :-
+    ground_members_of_table(AnotherTable, GroundTable),
+    \+ member(Person, GroundTable).</code></pre>
+
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>as before, this pulls all of the “named” members into <code>GroundTable</code> and the next line ensures that the person we’re testing is <em>not</em> part of that set. finally we get to the end:
+<!-- /wp:paragraph --></p>
+
+<!-- wp:code -->
+
+<pre class="wp-block-code"><code>only_at_one_table(Person, AllTables) :-
+    member(Table1, AllTables),
+    member(Person, Table1),
+    subtract(AllTables, [Table1], OtherTables),
+    foreach(member(AnotherTable, OtherTables), not_ground_member_of_table(Person, AnotherTable)).</code></pre>
+
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>which very simply does a bit of work to create all the tables the person should <em>not</em> be at (any other table than the one they’re currently at), and then ensures that the person is, in fact, not at any of those other tables. 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:paragraph -->
+<p>we’re so close! now, we just have to make sure that our computer doesn’t do any funny stuff by making some tables magically large or small on us. we need a way to constrain the tables to be as large as we want. so below we have <code>assign_length</code>, which for reasons that will make sense below, assume that you have a list of tables and a list of lengths that you want to map to them, and this works for one member (at the specified index <code>Idx</code>). 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:code -->
+
+<pre class="wp-block-code"><code>assign_length(Idx, AllTables, Lengths) :-
+    nth1(Idx, AllTables, ThisTable),
+    nth1(Idx, Lengths, LengthOfThisTable),
+    length(ThisTable, LengthOfThisTable).</code></pre>
+
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>okay, so now we can pull all this together. this is the final goal which we can query to find arrangements that will work! going through it line by line, it’s pretty straightfoward. the first three lines ensure that there will only be as many tables as we want, and that they will have only as many seats as we want. the fourth line ensures that pairs that we <em>want to sit together</em> are at the same table, and that pairs that we <em>want to sit apart</em> are at different tables. the last two lines ensure that everyone is just sitting at one table.
+<!-- /wp:paragraph --></p>
+
+<!-- wp:code -->
+
+<pre class="wp-block-code"><code>arrangement(Tables, Lengths, Pairs, Exclusions) :-
+    length(Tables, Y),
+    length(Lengths, Y),
+    foreach(between(1, Y, X), assign_length(X, Tables, Lengths)),
+    foreach(member(Pair, Pairs), pair_at_same_table(Pair, Tables)),
+    foreach(member(Excl, Exclusions), pair_at_different_tables(Excl, Tables)),
+    flatten(Pairs, AllPeople),
+    foreach(member(Person, AllPeople), only_at_one_table(Person, Tables)).</code></pre>
+
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>run this code, and what do you get? 
+<!-- /wp:paragraph --></p>
+
+<!-- wp:code -->
+
+<pre class="wp-block-code"><code>?- arrangement([X,Y], [3,3], [[a,b], [c,d]], [[a,c]]).
+X = [a, b, a],
+Y = [c, d, c]
+% variables may be duplicated within the same table if there is space</code></pre>
+
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>and impossible arrangements will fail:
+<!-- /wp:paragraph --></p>
+
+<!-- wp:code -->
+
+<pre class="wp-block-code"><code>?- arrangment([X,Y], [3,3], [[a,b], [c,d]], [[a,b]]).
+false.</code></pre>
+
+<!-- /wp:code -->
+
+</div>
+
+
+
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Thomas Pendergast Vladeck 
+        <br />
+        Managing Director of
+          <a href="https://www.gradientmetrics.com/">Gradient Metrics</a>
+        <br />
+        thomas.vladeck@gmail.com
+      </p>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-6016902-1");
+pageTracker._trackPageview();
+</script>
+<!-- Google Analytics end -->
+
+</body>
+</html>

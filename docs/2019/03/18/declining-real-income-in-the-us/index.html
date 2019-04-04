@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Declining real income in the US</title>
+   <meta name="author" content="Thomas Pendergast Vladeck" />
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Typekit -->
+   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+
+<div class="site">
+  <div class="title">
+    <a href="/">Thomas Pendergast Vladeck</a>
+    <a class="extra" href="/">home</a>
+  </div>
+
+  <div id="title">
+    <h1>Declining real income in the US</h1>
+</div>
+
+<div id="post">
+<!-- wp:html -->
+<p>I am not a big fan of income inequality <em>per se</em> as a policy issue. I care more about poverty alleviation and improving the living situation of the majority of Americans, versus capping the income or wealth of a segment of the population. Of course, there is an argument around concentration of power, and of heading off a course where we end up having the modern equivalent of a landed aristocracy, which I’m receptive to. But putting that aside for the moment, when I see graphs that show that income inequality is rising, I find myself thinking “that is a combination of two statistics, only one (the income of the average or lower-income segment of Americans) I really care about”.
+<!-- /wp:html --></p>
+
+<!-- wp:paragraph -->
+<p>So I decided to do a quick analysis, thinking it would show that income was rising across the board for all segments (even if income was rising faster in some segments vs. others, creating inequality). This is not what I found.
+<!-- /wp:paragraph --></p>
+
+<!-- wp:paragraph -->
+<p>I took a sample of <a href="http://ipums.org">IPUMS data</a>, which has individual-level data from the US census. I then built a series of smooth additive quantile regression models using the package <a href="https://cran.r-project.org/web/packages/qgam/qgam.pdf">qgam</a>. (A quantile regression is where you’re estimating a conditional percentile, such as the median — 50th percentile — or some other, like 90th or 10th, as opposed to the mean. Smooth and additive = think <a href="https://multithreaded.stitchfix.com/blog/2015/07/30/gam/">generalized additive model</a>).
+<!-- /wp:paragraph --></p>
+
+<!-- wp:paragraph -->
+<p>I then regressed the individual-level income data on the year, age of the respondent, and the sex of the respondent. Here are the graphs of the year coefficient for the 10th, 50th, and 90th percentiles:
+<!-- /wp:paragraph --></p>
+
+<!-- wp:image {"id":661,"width":697,"height":504} -->
+<figure class="wp-block-image is-resized"><img src="http://tomvladeck.com/wp-content/uploads/2019/03/image-3.png" alt="" class="wp-image-661" width="697" height="504" /></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Basically, the largest incomes have kept increasing. The median income has stagnated from sometime between 1990 and 2000. And worst of all, the lower incomes have declined to roughly 1980 levels in the past 20 years.
+<!-- /wp:paragraph --></p>
+
+<!-- wp:paragraph -->
+<p>Now, this isn’t the same thing as saying the income of the wealthiest <em>Americans</em> have kept increasing — people’s incomes change quite a bit from year to year — but it is true to say that if you happen to find yourself in the 10th percentile of incomes in a given year, you’re going to be earning substantially less than you would have been in 2000. That is a Bad Thing.
+<!-- /wp:paragraph --></p>
+
+<p><br class="" /></p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="c1"># from IPUMS</span><span class="w">
+</span><span class="c1"># includes 1950 forward</span><span class="w">
+</span><span class="c1"># includes individual income </span><span class="w">
+</span><span class="c1"># sex</span><span class="w">
+</span><span class="c1"># age</span><span class="w">
+
+</span><span class="n">raw_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.table</span><span class="o">::</span><span class="n">fread</span><span class="p">(</span><span class="s2">"~/Downloads/usa_00008.csv"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span><span class="w">
+</span><span class="n">includes_income</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">raw_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">filter</span><span class="p">(</span><span class="o">!</span><span class="nf">is.na</span><span class="p">(</span><span class="n">INCTOT</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">filter</span><span class="p">(</span><span class="n">INCTOT</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="m">9999999</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">filter</span><span class="p">(</span><span class="n">INCTOT</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="m">-000001</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">filter</span><span class="p">(</span><span class="n">INCTOT</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="m">-009995</span><span class="p">)</span><span class="w">
+
+
+</span><span class="c1"># http://www.in2013dollars.com/us/inflation/1950</span><span class="w">
+</span><span class="n">adjusted_income</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> 
+  </span><span class="n">includes_income</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">mutate</span><span class="p">(</span><span class="w">
+    </span><span class="n">ADJINC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">case_when</span><span class="p">(</span><span class="w">
+      </span><span class="n">YEAR</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">1950</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">INCTOT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">10.49</span><span class="p">,</span><span class="w">
+      </span><span class="n">YEAR</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">1960</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">INCTOT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">8.54</span><span class="p">,</span><span class="w">
+      </span><span class="n">YEAR</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">1970</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">INCTOT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">6.51</span><span class="p">,</span><span class="w">
+      </span><span class="n">YEAR</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">1980</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">INCTOT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">3.07</span><span class="p">,</span><span class="w">
+      </span><span class="n">YEAR</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">1990</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">INCTOT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">1.93</span><span class="p">,</span><span class="w">
+      </span><span class="n">YEAR</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">2000</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">INCTOT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">1.47</span><span class="p">,</span><span class="w">
+      </span><span class="n">YEAR</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">2010</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">INCTOT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">1.16</span><span class="p">,</span><span class="w">
+      </span><span class="n">YEAR</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">2017</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">INCTOT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">1.03</span><span class="w">
+    </span><span class="p">)</span><span class="w">
+  </span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">mutate</span><span class="p">(</span><span class="n">ADJYEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">YEAR</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">1950</span><span class="p">)</span><span class="w">
+
+</span><span class="n">library</span><span class="p">(</span><span class="n">mgcv</span><span class="p">)</span><span class="w"> 
+</span><span class="n">library</span><span class="p">(</span><span class="n">qgam</span><span class="p">)</span><span class="w">
+
+</span><span class="n">mod_05</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">qgam</span><span class="p">(</span><span class="n">ADJINC</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">s</span><span class="p">(</span><span class="n">YEAR</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s</span><span class="p">(</span><span class="n">AGE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">SEX</span><span class="p">),</span><span class="w"> </span><span class="c1"># weight</span><span class="w">
+               </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sample_n</span><span class="p">(</span><span class="n">adjusted_income</span><span class="p">,</span><span class="w"> </span><span class="m">10000</span><span class="p">,</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PERWT</span><span class="p">,</span><span class="w"> </span><span class="n">replace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">T</span><span class="p">),</span><span class="w"> </span><span class="n">qu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.05</span><span class="p">)</span><span class="w">
+
+</span><span class="n">mod_10</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">qgam</span><span class="p">(</span><span class="n">ADJINC</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">s</span><span class="p">(</span><span class="n">YEAR</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s</span><span class="p">(</span><span class="n">AGE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">SEX</span><span class="p">),</span><span class="w"> </span><span class="c1"># weight</span><span class="w">
+             </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sample_n</span><span class="p">(</span><span class="n">adjusted_income</span><span class="p">,</span><span class="w"> </span><span class="m">10000</span><span class="p">,</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PERWT</span><span class="p">,</span><span class="w"> </span><span class="n">replace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">T</span><span class="p">),</span><span class="w"> </span><span class="n">qu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.1</span><span class="p">)</span><span class="w">
+
+</span><span class="n">mod_50</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">qgam</span><span class="p">(</span><span class="n">ADJINC</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">s</span><span class="p">(</span><span class="n">YEAR</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s</span><span class="p">(</span><span class="n">AGE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">SEX</span><span class="p">),</span><span class="w"> </span><span class="c1"># weight</span><span class="w">
+               </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sample_n</span><span class="p">(</span><span class="n">adjusted_income</span><span class="p">,</span><span class="w"> </span><span class="m">10000</span><span class="p">,</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PERWT</span><span class="p">,</span><span class="w"> </span><span class="n">replace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">T</span><span class="p">),</span><span class="w"> </span><span class="n">qu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">)</span><span class="w">
+
+</span><span class="n">mod_90</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">qgam</span><span class="p">(</span><span class="n">ADJINC</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">s</span><span class="p">(</span><span class="n">YEAR</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s</span><span class="p">(</span><span class="n">AGE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">SEX</span><span class="p">),</span><span class="w"> </span><span class="c1"># weight</span><span class="w">
+               </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sample_n</span><span class="p">(</span><span class="n">adjusted_income</span><span class="p">,</span><span class="w"> </span><span class="m">10000</span><span class="p">,</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PERWT</span><span class="p">,</span><span class="w"> </span><span class="n">replace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">T</span><span class="p">),</span><span class="w"> </span><span class="n">qu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.9</span><span class="p">)</span><span class="w">
+
+</span><span class="n">mod_95</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">qgam</span><span class="p">(</span><span class="n">ADJINC</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">s</span><span class="p">(</span><span class="n">YEAR</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s</span><span class="p">(</span><span class="n">AGE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">SEX</span><span class="p">),</span><span class="w"> </span><span class="c1"># weight</span><span class="w">
+               </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sample_n</span><span class="p">(</span><span class="n">adjusted_income</span><span class="p">,</span><span class="w"> </span><span class="m">10000</span><span class="p">,</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PERWT</span><span class="p">,</span><span class="w"> </span><span class="n">replace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">T</span><span class="p">),</span><span class="w"> </span><span class="n">qu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.95</span><span class="p">)</span><span class="w">
+
+
+</span><span class="n">par</span><span class="p">(</span><span class="n">mfrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">3</span><span class="p">))</span><span class="w">
+</span><span class="n">mod_10</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">plot</span><span class="p">(</span><span class="n">scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">select</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"10th percentile"</span><span class="p">,</span><span class="w"> </span><span class="n">ylab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"INCOME"</span><span class="p">)</span><span class="w">
+</span><span class="n">mod_50</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">plot</span><span class="p">(</span><span class="n">scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">select</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"50th percentile"</span><span class="p">,</span><span class="w"> </span><span class="n">ylab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">""</span><span class="p">)</span><span class="w">
+</span><span class="n">mod_90</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">plot</span><span class="p">(</span><span class="n">scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">select</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"90th percentile"</span><span class="p">,</span><span class="w"> </span><span class="n">ylab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">""</span><span class="p">)</span><span class="w">
+</span><span class="n">par</span><span class="p">(</span><span class="n">mfrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">))</span><span class="w">
+
+</span><span class="n">par</span><span class="p">(</span><span class="n">mfrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">))</span><span class="w">
+</span><span class="n">mod_05</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">plot</span><span class="p">(</span><span class="n">scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">select</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"5th percentile"</span><span class="p">,</span><span class="w"> </span><span class="n">ylab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"INCOME"</span><span class="p">)</span><span class="w">
+</span><span class="n">mod_95</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">plot</span><span class="p">(</span><span class="n">scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">select</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"95th percentile"</span><span class="p">,</span><span class="w"> </span><span class="n">ylab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">""</span><span class="p">)</span><span class="w">
+</span><span class="n">par</span><span class="p">(</span><span class="n">mfrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">))</span></code></pre></figure>
+
+
+</div>
+
+
+
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Thomas Pendergast Vladeck 
+        <br />
+        Managing Director of
+          <a href="https://www.gradientmetrics.com/">Gradient Metrics</a>
+        <br />
+        thomas.vladeck@gmail.com
+      </p>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-6016902-1");
+pageTracker._trackPageview();
+</script>
+<!-- Google Analytics end -->
+
+</body>
+</html>
