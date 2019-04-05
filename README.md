@@ -1,7 +1,7 @@
 # This is the data for my blog
 
-
 ## License
+
 
 The following directories and their contents are Copyright Thomas Pendergast Vladeck. You may not reuse anything therein without my permission:
 
@@ -9,3 +9,4 @@ The following directories and their contents are Copyright Thomas Pendergast Vla
 * docs/
 
 I got the initial layout (HTML and CSS) from http://github.com/mojombo/jekyll
+

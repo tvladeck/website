@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>A different kind of political geography</title>
+   <meta name="author" content="Thomas Pendergast Vladeck" />
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/website/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/website/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Typekit -->
+   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+
+<div class="site">
+  <div class="title">
+    <a href="/">Thomas Pendergast Vladeck</a>
+    <a class="extra" href="/">home</a>
+  </div>
+
+  <div id="title">
+    <h1>A different kind of political geography</h1>
+</div>
+
+<div id="post">
+<p>In the wake of the surprising (to say the least) electoral result I initiated a few projects to try and understand the politics of the country. One thing I wanted to understand was the impact of demographic and underlying situational variables (e.g. health, income, unemployment, etc.) on how people voted. Was the vote about Obamacare? Was it about lost jobs? Was it all education levels? Or was it all racism? Theories have been floated but I haven’t seen a rigorous evaluation of these hypotheses. What’s below is just an exploratory analysis, but the data does point in some interesting directions.</p>
+
+<p>What follows below are a series of visualizations of a <a href="https://github.com/Deleetdk/USA.county.data" target="_blank">large, aggregated dataset of both demographic, situational, and electoral data</a>. Sources for the demographic and situational data are listed <a href="https://openpsych.net/paper/12" target="_blank">here</a> and the electoral data is from the New York Times.</p>
+
+<p>The type of visualization is called a <a href="https://en.wikipedia.org/wiki/Self-organizing_map" target="_blank">self organized map</a>. Roughly speaking, each hexagon is a group of counties; the map arranges the counties such that similar ones are closer to each other on the map and dissimilar ones further apart:</p>
+
+<p><a href="http://tomvladeck.com/wp-content/uploads/2016/12/hs_diploma-1.svg"><img class="alignnone size-large wp-image-513" src="http://tomvladeck.com/wp-content/uploads/2016/12/hs_diploma-1.svg" alt="hs_diploma" /></a></p>
+
+<p>For any given variable (here - the proportion of residents in the counties that graduated from high school) the map is a heatmap. Redder colors means the counties index higher, bluer means they index lower. Here, the upper right are the counties where fewer people have a high school diploma, and lower left are the most educated.</p>
+
+<p><strong><em>All of the maps shown below are available at <a href="https://gradient.shinyapps.io/geography_of_voting/" target="_blank">this interactive site</a>. (A very similar set of maps, but for voting swings as opposed to voting share, <a href="https://gradient.shinyapps.io/geography_of_swings/" target="_blank">is available here</a>)</em></strong></p>
+
+<p>Below, we look at the voting share for Hillary. The counties are arranged in the same way as above, but since we’re looking at different variable the map is colored differently. (Confusingly, more votes for HRC are red as opposed to the customary blue for liberals, but work with me here). The reason this map is more organized than the rest is that I used this variable to “supervise” the organization (don’t worry about the details of this - basically it just guaranteed that this particular coloring, which is the reference point, would be organized.)</p>
+
+<p><a href="http://tomvladeck.com/wp-content/uploads/2016/12/base_plot.svg"><img class="alignnone size-large wp-image-512" src="http://tomvladeck.com/wp-content/uploads/2016/12/base_plot.svg" alt="base_plot" /></a></p>
+
+<p>Now that we have the basics in place, we can look at other variables: let’s check a few variables and see if they line up w/ the HRC voting share map. What we can do is draw a boundary around the areas that went strongly for Trump and for HRC like so:</p>
+
+<p><a href="http://tomvladeck.com/wp-content/uploads/2016/12/base_plot_w_annotation.svg"><img class="alignnone size-large wp-image-514" src="http://tomvladeck.com/wp-content/uploads/2016/12/base_plot_w_annotation.svg" alt="base_plot_w_annotation" /></a></p>
+
+<p>And we’ll keep these annotations throughout.</p>
+
+<p><strong>Health and insurance:</strong></p>
+
+<p>The breakdowns for uninsurance and health variables like obesity and diabetes don’t break down along electoral lines: the split goes in the opposite direction, with the highest uninsurance and low health areas going to both candidates:</p>
+
+<p><a href="http://tomvladeck.com/wp-content/uploads/2016/12/uninsured.svg"><img class="alignnone size-large wp-image-515" src="http://tomvladeck.com/wp-content/uploads/2016/12/uninsured.svg" alt="uninsured" /></a></p>
+
+<p><a href="http://tomvladeck.com/wp-content/uploads/2016/12/adult_obesity.svg"><img class="alignnone size-large wp-image-516" src="http://tomvladeck.com/wp-content/uploads/2016/12/adult_obesity.svg" alt="adult_obesity" /></a></p>
+
+<p><a href="http://tomvladeck.com/wp-content/uploads/2016/12/diabetes.svg"><img class="alignnone size-large wp-image-517" src="http://tomvladeck.com/wp-content/uploads/2016/12/diabetes.svg" alt="diabetes" /></a></p>
+
+<p><strong>Economic variables:</strong></p>
+
+<p>These graphs should put the “economic anxiety” argument to rest, as the areas with highest unemployment went strongest to HRC and those with the least went strongest to Trump.</p>
+
+<p><a href="http://tomvladeck.com/wp-content/uploads/2016/12/unemploymen.svg"><img class="alignnone size-large wp-image-518" src="http://tomvladeck.com/wp-content/uploads/2016/12/unemploymen.svg" alt="unemploymen" /></a></p>
+
+<p><a href="http://tomvladeck.com/wp-content/uploads/2016/12/earnings.svg"><img class="alignnone size-large wp-image-519" src="http://tomvladeck.com/wp-content/uploads/2016/12/earnings.svg" alt="earnings" /></a></p>
+
+<p><strong>Ethnic Variables:</strong></p>
+
+<p>A few graphs line up pretty well: whiteness and ethnic homogeneity. And whiteness and ethnic homogeneity line up basically on top of each other. This would support the hypothesis that the election for Trump was mainly a cultural (and not a policy) event; white enclaves are reacting against a diminishing place in the cultural landscape - hence the making things great <strong>again</strong>:</p>
+
+<p><a href="http://tomvladeck.com/wp-content/uploads/2016/12/whiteness.svg"><img class="alignnone size-large wp-image-520" src="http://tomvladeck.com/wp-content/uploads/2016/12/whiteness.svg" alt="whiteness" /></a></p>
+
+<p><a href="http://tomvladeck.com/wp-content/uploads/2016/12/homogeneity.svg"><img class="alignnone size-large wp-image-521" src="http://tomvladeck.com/wp-content/uploads/2016/12/homogeneity.svg" alt="homogeneity" /></a></p>
+
+<p><strong>See for yourself: </strong></p>
+
+<p><a href="https://github.com/tvladeck/election_som">My code is available here</a> (it is not very well commented or formatted, but it’s there).</p>
+
+<p>As mentioned above, <a href="https://gradient.shinyapps.io/geography_of_voting/">all the maps above are available at this site</a>. If you want to see something similar but with voting <strong>swings</strong> - the amount the county changed their vote from ‘12 to ‘16, you can see that <a href="https://gradient.shinyapps.io/geography_of_swings/">here</a>.</p>
+
+<p> </p>
+
+<p> </p>
+
+</div>
+
+
+
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Thomas Pendergast Vladeck 
+        <br />
+        Managing Director of
+          <a href="https://www.gradientmetrics.com/">Gradient Metrics</a>
+        <br />
+        thomas.vladeck@gmail.com
+      </p>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-6016902-1");
+pageTracker._trackPageview();
+</script>
+<!-- Google Analytics end -->
+
+</body>
+</html>
