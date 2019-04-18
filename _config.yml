@@ -1,8 +1,10 @@
 url: tvladeck.github.io
-baseurl: /website
+# baseurl: /website
 
 
 destination: ./docs
 
 plugin:
     - jekyll-twitter-plugin
+
+theme: "ed."
